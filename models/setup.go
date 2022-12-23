@@ -29,11 +29,11 @@ func ConnectDatabase() {
 		return
 	}
 
-	var PASSWORD = loadEnvVar("POSTGRES_PASSWORD")
-	var USERNAME = loadEnvVar("POSTGRES_USERNAME")
-	var DB_NAME = loadEnvVar("DATABASE_NAME")
-	var DB_PORT = loadEnvVar("DATABASE_PORT")
-	var DB_HOST = loadEnvVar("DATABASE_HOST")
+	PASSWORD := loadEnvVar("POSTGRES_PASSWORD")
+	USERNAME := loadEnvVar("POSTGRES_USERNAME")
+	DB_NAME := loadEnvVar("DATABASE_NAME")
+	DB_PORT := loadEnvVar("DATABASE_PORT")
+	DB_HOST := loadEnvVar("DATABASE_HOST")
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable timezone=Asia/Shanghai",
@@ -54,10 +54,11 @@ func ConnectDatabase() {
 	DB = database
 }
 
-func loadEnvVar(v string) string {
-	envVariable, exists := os.LookupEnv(v)
+// returns the env variable given string key
+func loadEnvVar(key string) string {
+	envVariable, exists := os.LookupEnv(key)
 	if !exists {
-		fmt.Printf("Could not find %s \n", v)
+		fmt.Printf("Could not find %s \n", key)
 	}
 	return envVariable
 }
