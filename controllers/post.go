@@ -74,7 +74,17 @@ func DeletePost(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "record not found"})
 		return
 	}
-
 	models.DB.Delete(&post)
 	c.JSON(http.StatusOK, gin.H{"data": "success"})
+}
+
+func DeleteAllPosts(c *gin.Context) {
+	var posts []models.Post
+	if err := models.DB.Find(&posts).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "records not found"})
+		return
+	}
+	models.DB.Delete(&posts)
+	c.JSON(http.StatusOK, gin.H{"data": "success"})
+
 }
