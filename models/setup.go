@@ -13,19 +13,27 @@ import (
 var DB *gorm.DB
 
 // get env
-func init() {
+func hasEnvFile() error {
 	if err := godotenv.Load(); err != nil {
 		log.Print("No .env file found")
+		return err
 	}
+	log.Print("Found .env file")
+	return nil
 }
 
-var PASSWORD = loadEnvVar("POSTGRES_PASSWORD")
-var USERNAME = loadEnvVar("POSTGRES_USERNAME")
-var DB_NAME = loadEnvVar("DATABASE_NAME")
-var DB_PORT = loadEnvVar("DATABASE_PORT")
-var DB_HOST = loadEnvVar("DATABASE_HOST")
-
 func ConnectDatabase() {
+
+	// check if env file exists
+	if hasEnvFile() != nil {
+		return
+	}
+
+	var PASSWORD = loadEnvVar("POSTGRES_PASSWORD")
+	var USERNAME = loadEnvVar("POSTGRES_USERNAME")
+	var DB_NAME = loadEnvVar("DATABASE_NAME")
+	var DB_PORT = loadEnvVar("DATABASE_PORT")
+	var DB_HOST = loadEnvVar("DATABASE_HOST")
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable timezone=Asia/Shanghai",
@@ -48,8 +56,8 @@ func ConnectDatabase() {
 
 func loadEnvVar(v string) string {
 	envVariable, exists := os.LookupEnv(v)
-	if exists {
-		fmt.Printf("Found %s", v)
+	if !exists {
+		fmt.Printf("Could not find %s \n", v)
 	}
 	return envVariable
 }
