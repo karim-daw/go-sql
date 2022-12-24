@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"go-sql/models"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,6 +16,8 @@ type CreatePostInput struct {
 
 func CreatePost(c *gin.Context) {
 	var input CreatePostInput
+	log.Print("creating post")
+
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -80,8 +83,10 @@ func DeletePost(c *gin.Context) {
 
 func DeleteAllPosts(c *gin.Context) {
 	var posts []models.Post
-	if err := models.DB.Find(&posts).Error; err != nil {
-		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "records not found"})
+	result := models.DB.Find(&posts).RowsAffected
+
+	if result == 0 {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "no records found"})
 		return
 	}
 	models.DB.Delete(&posts)
