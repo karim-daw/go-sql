@@ -8,3 +8,8 @@ type Post struct {
 	Content   string    `json:"content"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+type User struct {
+	ID   uint   `json:"id" gorm:"primaryKey"`
+	Name string `json:"name"`
+}
