@@ -50,6 +50,7 @@ func ConnectDatabase() {
 	}
 
 	database.AutoMigrate(&Post{}) // register Post model
+	database.AutoMigrate(&User{}) // register Post model
 
 	DB = database
 }
