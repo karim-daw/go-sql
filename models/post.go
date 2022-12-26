@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 type Post struct {
 	ID        uint      `json:"id" gorm:"primaryKey"`
@@ -9,7 +12,13 @@ type Post struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-type User struct {
-	ID   uint   `json:"id" gorm:"primaryKey"`
-	Name string `json:"name"`
+func (p *Post) Validate() error {
+
+	if p.Title == "" {
+		return errors.New("Required Title")
+	}
+	if p.Content == "" {
+		return errors.New("Required Content")
+	}
+	return nil
 }

@@ -91,5 +91,4 @@ func DeleteAllPosts(c *gin.Context) {
 	}
 	models.DB.Delete(&posts)
 	c.JSON(http.StatusOK, gin.H{"data": "success"})
-
 }
