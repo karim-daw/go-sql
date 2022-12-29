@@ -9,7 +9,7 @@ type Post struct {
 	ID        uint      `json:"post_id" gorm:"primaryKey"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`
-	UserId    uint      `json:"user_id"`
+	AuthorID  uint      `json:"author_id"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
