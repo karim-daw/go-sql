@@ -12,6 +12,8 @@ func main() {
 	models.ConnectDatabase()
 
 	router.POST("/posts", controllers.CreatePost)
+	router.POST("/users", controllers.CreateUser)
+
 	router.GET("/posts", controllers.FindPosts)
 	router.GET("/posts/:id", controllers.FindPost) // here!
 	router.PATCH("/posts/:id", controllers.UpdatePost)
