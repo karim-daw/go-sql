@@ -10,8 +10,9 @@ import (
 
 // defines body schema for request "CreateBlog"
 type CreatePostInput struct {
-	Title   string `json:"title" binding:"required"`
-	Content string `json:"content" binding:"required"`
+	Title    string `json:"title" binding:"required"`
+	Content  string `json:"content" binding:"required"`
+	AuthorID uint   `json:"author_id"`
 }
 
 func CreatePost(c *gin.Context) {
@@ -22,7 +23,7 @@ func CreatePost(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	post := models.Post{Title: input.Title, Content: input.Content}
+	post := models.Post{Title: input.Title, Content: input.Content, AuthorID: input.AuthorID}
 	models.DB.Create(&post)
 
 	c.JSON(http.StatusOK, gin.H{"data": post})
