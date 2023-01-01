@@ -95,7 +95,7 @@ func DeleteAllPosts(c *gin.Context) {
 }
 
 type CreateUserInput struct {
-	Name string `json:"name" binding:"required"`
+	Username string `json:"username" binding:"required"`
 }
 
 func CreateUser(c *gin.Context) {
@@ -106,7 +106,7 @@ func CreateUser(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	user := models.User{Name: input.Name}
+	user := models.User{Username: input.Username}
 	user.SaveUser()
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
