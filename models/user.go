@@ -2,16 +2,19 @@ package models
 
 import (
 	"errors"
+
+	"gorm.io/gorm"
 )
 
 type User struct {
-	ID    uint   `json:"user_id" gorm:"primaryKey"`
-	Name  string `json:"name"`
-	Posts []Post `json:"posts" gorm:"foreignKey:AuthorID"`
+	gorm.Model
+	Username string `json:"username"`
+	Password string `json:"-"`
+	Posts    []Post `json:"posts" gorm:"foreignKey:AuthorID"`
 }
 
 func (u *User) Validate() error {
-	if u.Name == "" {
+	if u.Username == "" {
 		return errors.New("required name")
 	}
 	return nil
