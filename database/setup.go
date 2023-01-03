@@ -8,6 +8,8 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+
+	"go-sql/models"
 )
 
 var DB *gorm.DB
@@ -49,8 +51,8 @@ func ConnectDatabase() {
 		panic("Failed to connect to database!")
 	}
 
-	database.AutoMigrate(&Post{}) // register Post model
-	database.AutoMigrate(&User{}) // register Post model
+	database.AutoMigrate(&models.Post{}) // register Post model
+	database.AutoMigrate(&models.User{}) // register User model
 
 	DB = database
 }
