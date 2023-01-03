@@ -2,14 +2,14 @@ package main
 
 import (
 	"go-sql/controllers"
-	"go-sql/models"
+	"go-sql/database"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	router := gin.Default()
-	models.ConnectDatabase()
+	database.ConnectDatabase()
 
 	router.POST("/posts", controllers.CreatePost)
 	router.POST("/users", controllers.CreateUser)
