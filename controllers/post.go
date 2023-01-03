@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"go-sql/database"
 	"go-sql/models"
 	"log"
 	"net/http"
@@ -26,7 +27,7 @@ func CreatePost(c *gin.Context) {
 		return
 	}
 	post := models.Post{Title: input.Title, Content: input.Content, AuthorID: input.AuthorID}
-	models.DB.Create(&post)
+	database.DB.Create(&post)
 
 	c.JSON(http.StatusOK, gin.H{"data": post})
 }
@@ -34,14 +35,14 @@ func CreatePost(c *gin.Context) {
 // find every post entry in database
 func FindPosts(c *gin.Context) {
 	var posts []models.Post
-	models.DB.Find(&posts)
+	database.DB.Find(&posts)
 
 	c.JSON(http.StatusOK, gin.H{"data": posts})
 }
 
 func FindPost(c *gin.Context) {
 	var post models.Post
-	if err := models.DB.Where("id = ?", c.Param("id")).First(&post).Error; err != nil {
+	if err := database.DB.Where("id = ?", c.Param("id")).First(&post).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
@@ -57,7 +58,7 @@ type UpdatePostInput struct {
 
 func UpdatePost(c *gin.Context) {
 	var post models.Post
-	if err := models.DB.Where("id =?", c.Param("id")).First(&post).Error; err != nil {
+	if err := database.DB.Where("id =?", c.Param("id")).First(&post).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "record not found"})
 		return
 	}
@@ -70,29 +71,29 @@ func UpdatePost(c *gin.Context) {
 	}
 	updatedPost := models.Post{Title: input.Title, Content: input.Content}
 
-	models.DB.Model(&post).Updates(&updatedPost)
+	database.DB.Model(&post).Updates(&updatedPost)
 	c.JSON(http.StatusOK, gin.H{"data": post})
 }
 
 func DeletePost(c *gin.Context) {
 	var post models.Post
-	if err := models.DB.Where("id = ?", c.Param("id")).First(&post).Error; err != nil {
+	if err := database.DB.Where("id = ?", c.Param("id")).First(&post).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "record not found"})
 		return
 	}
-	models.DB.Delete(&post)
+	database.DB.Delete(&post)
 	c.JSON(http.StatusOK, gin.H{"data": "success"})
 }
 
 func DeleteAllPosts(c *gin.Context) {
 	var posts []models.Post
-	result := models.DB.Find(&posts).RowsAffected
+	result := database.DB.Find(&posts).RowsAffected
 
 	if result == 0 {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "no records found"})
 		return
 	}
-	models.DB.Delete(&posts)
+	database.DB.Delete(&posts)
 	c.JSON(http.StatusOK, gin.H{"data": "success"})
 }
 
@@ -109,7 +110,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 	user := models.User{Username: input.Username}
-	user.SaveUser()
+	user.SaveUser(database.DB)
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
 }
