@@ -20,8 +20,8 @@ func (u *User) Validate() error {
 	return nil
 }
 
-func (u *User) SaveUser() (*User, error) {
-	err := DB.Debug().Create(&u).Error
+func (u *User) SaveUser(db *gorm.DB) (*User, error) {
+	err := db.Debug().Create(&u).Error
 	if err != nil {
 		return &User{}, err
 	}
@@ -29,10 +29,10 @@ func (u *User) SaveUser() (*User, error) {
 }
 
 // func (u *User) FindAllUsers(db *DB) (*[]User, error) {
-func (u *User) FindUsers() (*[]User, error) {
+func (u *User) FindUsers(db *gorm.DB) (*[]User, error) {
 	var err error
 	users := []User{}
-	err = DB.Debug().Model(&User{}).Limit(100).Find(&users).Error
+	err = db.Debug().Model(&User{}).Limit(100).Find(&users).Error
 	if err != nil {
 		return &[]User{}, err
 	}
