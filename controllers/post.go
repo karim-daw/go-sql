@@ -40,31 +40,30 @@ func FindPosts(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": posts})
 }
 
+// finds a post based on post ID
 func FindPost(c *gin.Context) {
 	var post models.Post
 	if err := database.DB.Where("id = ?", c.Param("id")).First(&post).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{"data": post})
-
 }
 
+// struct representing updated post
 type UpdatePostInput struct {
 	Title   string `json:"title"`
 	Content string `json:"content"`
 }
 
+// updates a post
 func UpdatePost(c *gin.Context) {
 	var post models.Post
 	if err := database.DB.Where("id =?", c.Param("id")).First(&post).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "record not found"})
 		return
 	}
-
 	var input UpdatePostInput
-
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -95,22 +94,4 @@ func DeleteAllPosts(c *gin.Context) {
 	}
 	database.DB.Delete(&posts)
 	c.JSON(http.StatusOK, gin.H{"data": "success"})
-}
-
-type CreateUserInput struct {
-	Username string `json:"username" binding:"required"`
-}
-
-func CreateUser(c *gin.Context) {
-	var input CreateUserInput
-	log.Print("creating user")
-
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	user := models.User{Username: input.Username}
-	user.SaveUser(database.DB)
-
-	c.JSON(http.StatusOK, gin.H{"data": user})
 }
