@@ -22,7 +22,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 	user := models.User{Username: input.Username}
-	user.SaveUser(database.DB)
+	user.SaveUser(database.DB) // TODO - handle error
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
 }
