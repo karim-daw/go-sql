@@ -15,7 +15,7 @@ type User struct {
 
 func (u *User) Validate() error {
 	if u.Username == "" {
-		return errors.New("required name")
+		return errors.New("required username is missing")
 	}
 	return nil
 }
