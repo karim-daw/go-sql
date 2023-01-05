@@ -26,3 +26,12 @@ func CreateUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
 }
+
+func findUser(c *gin.Context) {
+}
+
+func updateUser(c *gin.Context) {
+}
+
+func deleteUser(c *gin.Context) {
+}
