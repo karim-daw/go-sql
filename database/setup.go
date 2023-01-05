@@ -24,6 +24,15 @@ func hasEnvFile() error {
 	return nil
 }
 
+// returns the env variable given string key
+func loadEnvVar(key string) string {
+	envVariable, exists := os.LookupEnv(key)
+	if !exists {
+		fmt.Printf("Could not find %s \n", key)
+	}
+	return envVariable
+}
+
 func ConnectDatabase() {
 
 	// check if env file exists
@@ -55,13 +64,4 @@ func ConnectDatabase() {
 	database.AutoMigrate(&models.User{}) // register User model
 
 	DB = database
-}
-
-// returns the env variable given string key
-func loadEnvVar(key string) string {
-	envVariable, exists := os.LookupEnv(key)
-	if !exists {
-		fmt.Printf("Could not find %s \n", key)
-	}
-	return envVariable
 }
