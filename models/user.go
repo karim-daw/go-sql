@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"go-sql/database"
 
 	"gorm.io/gorm"
 )
@@ -20,8 +21,8 @@ func (u *User) Validate() error {
 	return nil
 }
 
-func (u *User) SaveUser(db *gorm.DB) (*User, error) {
-	err := db.Debug().Create(&u).Error
+func (u *User) SaveUser() (*User, error) {
+	err := database.DB.Debug().Create(&u).Error
 	if err != nil {
 		return &User{}, err
 	}
