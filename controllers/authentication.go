@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"go-sql/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,12 +16,12 @@ func Register(context *gin.Context) {
 		return
 	}
 
-	user := model.User{
+	user := models.User{
 		Username: input.Username,
 		Password: input.Password,
 	}
 
-	savedUser, err := user.Save()
+	savedUser, err := user.SaveUser()
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
