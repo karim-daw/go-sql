@@ -24,6 +24,7 @@ func hasEnvFile() error {
 	return nil
 }
 
+// TODO: put the env stuff in helper file
 // returns the env variable given string key
 func loadEnvVar(key string) string {
 	envVariable, exists := os.LookupEnv(key)
@@ -60,6 +61,7 @@ func ConnectDatabase() {
 		panic("Failed to connect to database!")
 	}
 
+	// TODO:inject model dependancy in controller
 	database.AutoMigrate(&models.Post{}) // register Post model
 	database.AutoMigrate(&models.User{}) // register User model
 
