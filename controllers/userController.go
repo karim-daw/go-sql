@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"go-sql/database"
 	"go-sql/models"
 	"log"
 	"net/http"
@@ -26,11 +27,14 @@ func CreateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": user})
 }
 
-func findUser(c *gin.Context) {
+func FindUser(c *gin.Context) {
+	var user models.User
+	database.DB.Find(&user)
+	c.JSON(http.StatusOK, gin.H{"data": user})
 }
 
-func updateUser(c *gin.Context) {
+func UpdateUser(c *gin.Context) {
 }
 
-func deleteUser(c *gin.Context) {
+func DeleteUser(c *gin.Context) {
 }
