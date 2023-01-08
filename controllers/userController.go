@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"go-sql/database"
 	"go-sql/models"
 	"log"
 	"net/http"
@@ -22,7 +21,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 	user := models.User{Username: input.Username}
-	user.SaveUser(database.DB) // TODO - handle error
+	user.SaveUser() // TODO - handle error
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
 }
