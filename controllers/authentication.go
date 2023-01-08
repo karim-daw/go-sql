@@ -8,7 +8,7 @@ import (
 )
 
 func Register(context *gin.Context) {
-	var input model.AuthenticationInput
+	var input models.AuthenticationInput
 
 	if err := context.ShouldBindJSON(&input); err != nil {
 
