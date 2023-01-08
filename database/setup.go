@@ -3,49 +3,28 @@ package database
 import (
 	"fmt"
 	"log"
-	"os"
 
-	"github.com/joho/godotenv"
+	"go-sql/helpers"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-
-	"go-sql/models"
 )
 
 var DB *gorm.DB
 
-// get env
-func hasEnvFile() error {
-	if err := godotenv.Load(); err != nil {
-		log.Print("No .env file found")
-		return err
-	}
-	log.Print("Found .env file")
-	return nil
-}
-
-// TODO: put the env stuff in helper file
-// returns the env variable given string key
-func loadEnvVar(key string) string {
-	envVariable, exists := os.LookupEnv(key)
-	if !exists {
-		fmt.Printf("Could not find %s \n", key)
-	}
-	return envVariable
-}
-
 func ConnectDatabase() {
 
 	// check if env file exists
-	if hasEnvFile() != nil {
+	if helpers.HasEnvFile() != nil {
+		log.Print(helpers.HasEnvFile().Error())
 		return
 	}
 
-	PASSWORD := loadEnvVar("POSTGRES_PASSWORD")
-	USERNAME := loadEnvVar("POSTGRES_USERNAME")
-	DB_NAME := loadEnvVar("DATABASE_NAME")
-	DB_PORT := loadEnvVar("DATABASE_PORT")
-	DB_HOST := loadEnvVar("DATABASE_HOST")
+	PASSWORD := helpers.LoadEnvVar("POSTGRES_PASSWORD")
+	USERNAME := helpers.LoadEnvVar("POSTGRES_USERNAME")
+	DB_NAME := helpers.LoadEnvVar("DATABASE_NAME")
+	DB_PORT := helpers.LoadEnvVar("DATABASE_PORT")
+	DB_HOST := helpers.LoadEnvVar("DATABASE_HOST")
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable timezone=Asia/Shanghai",
@@ -60,10 +39,6 @@ func ConnectDatabase() {
 	if err != nil {
 		panic("Failed to connect to database!")
 	}
-
-	// TODO:inject model dependancy in controller
-	database.AutoMigrate(&models.Post{}) // register Post model
-	database.AutoMigrate(&models.User{}) // register User model
 
 	DB = database
 }
