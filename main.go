@@ -12,7 +12,7 @@ func main() {
 	database.ConnectDatabase()
 
 	router.POST("/posts", controllers.CreatePost)
-	router.POST("/users", controllers.CreateUser)
+	router.POST("/register", controllers.RegisterUser)
 
 	router.GET("/posts", controllers.FindPosts)
 	router.GET("/posts/:id", controllers.FindPost) // here!
