@@ -1,4 +1,4 @@
-package models
+package types
 
 type AuthenticationInput struct {
 	Username string `json:"username" binding:"required"`
