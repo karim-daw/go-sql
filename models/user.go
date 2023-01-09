@@ -4,6 +4,7 @@ import (
 	"errors"
 	"go-sql/database"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
@@ -28,6 +29,12 @@ func (user *User) Save() (*User, error) {
 		return &User{}, err // verbose error check if suer exists
 	}
 	return user, nil
+}
+
+func UpdateUser(c *gin.Context) {
+}
+
+func DeleteUser(c *gin.Context) {
 }
 
 // find first 100 users
