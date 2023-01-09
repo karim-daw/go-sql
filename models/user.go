@@ -9,33 +9,42 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string `json:"username"`
-	Password string `json:"-"`
+	Username string `gorm:"size:255;not null;unique" json:"username"`
+	Password string `gorm:"size:255;not null;" json:"-"`
 	Posts    []Post `json:"posts" gorm:"foreignKey:AuthorID"`
 }
 
-func (u *User) Validate() error {
-	if u.Username == "" {
+func (user *User) Validate() error {
+	if user.Username == "" {
 		return errors.New("required username is missing")
 	}
 	return nil
 }
 
-func (u *User) SaveUser() (*User, error) {
-	err := database.DB.Debug().Create(&u).Error
+// save user into database
+func (user *User) Save() (*User, error) {
+	err := database.DB.Create(&user).Error
 	if err != nil {
-		return &User{}, err
+		return &User{}, err // verbose error check if suer exists
 	}
-	return u, nil
+	return user, nil
 }
 
-// func (u *User) FindAllUsers(db *DB) (*[]User, error) {
-func (u *User) FindUsers(db *gorm.DB) (*[]User, error) {
-	var err error
+// find first 100 users
+func FindUsers() (*[]User, error) {
 	users := []User{}
-	err = db.Debug().Model(&User{}).Limit(100).Find(&users).Error
+	err := database.DB.Model(&User{}).Limit(100).Find(&users).Error
 	if err != nil {
 		return &[]User{}, err
 	}
 	return &users, err
+}
+
+func FindUserByUsername(username string) (User, error) {
+	var user User
+	err := database.DB.Where("username=?", username).Find(&user).Error
+	if err != nil {
+		return User{}, err
+	}
+	return user, nil
 }
