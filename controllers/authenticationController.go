@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"go-sql/models"
+	"go-sql/types"
 	"log"
 	"net/http"
 
@@ -9,7 +10,7 @@ import (
 )
 
 func RegisterUser(c *gin.Context) {
-	var input models.AuthenticationInput
+	var input types.AuthenticationInput
 	log.Print("creating user...")
 
 	if err := c.ShouldBindJSON(&input); err != nil {
