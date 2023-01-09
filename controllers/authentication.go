@@ -2,31 +2,30 @@ package controllers
 
 import (
 	"go-sql/models"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Register(context *gin.Context) {
+func RegisterUser(c *gin.Context) {
 	var input models.AuthenticationInput
+	log.Print("creating user...")
 
-	if err := context.ShouldBindJSON(&input); err != nil {
-
-		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
+	// register user
 	user := models.User{
 		Username: input.Username,
 		Password: input.Password,
 	}
-
-	savedUser, err := user.SaveUser()
+	savedUser, err := user.Save()
 
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	context.JSON(http.StatusCreated, gin.H{"user": savedUser})
+	c.JSON(http.StatusCreated, gin.H{"user": savedUser})
 }
