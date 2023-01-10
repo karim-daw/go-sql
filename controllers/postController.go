@@ -3,23 +3,16 @@ package controllers
 import (
 	"go-sql/database"
 	"go-sql/models"
+	"go-sql/types"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-// defines body schema for request "CreateBlog"
-type CreatePostInput struct {
-	gorm.Model
-	Title    string `json:"title" binding:"required"`
-	Content  string `json:"content" binding:"required"`
-	AuthorID uint   `json:"author_id"`
-}
-
+// create post
 func CreatePost(c *gin.Context) {
-	var input CreatePostInput
+	var input types.PostInput
 	log.Print("creating post")
 
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -50,12 +43,6 @@ func FindPost(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": post})
 }
 
-// struct representing updated post
-type UpdatePostInput struct {
-	Title   string `json:"title"`
-	Content string `json:"content"`
-}
-
 // updates a post
 func UpdatePost(c *gin.Context) {
 	var post models.Post
@@ -63,7 +50,7 @@ func UpdatePost(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "record not found"})
 		return
 	}
-	var input UpdatePostInput
+	var input types.UpdatePostInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -74,6 +61,7 @@ func UpdatePost(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": post})
 }
 
+// delete post
 func DeletePost(c *gin.Context) {
 	var post models.Post
 	if err := database.DB.Where("id = ?", c.Param("id")).First(&post).Error; err != nil {
@@ -84,6 +72,7 @@ func DeletePost(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": "success"})
 }
 
+// delete all posts
 func DeleteAllPosts(c *gin.Context) {
 	var posts []models.Post
 	result := database.DB.Find(&posts).RowsAffected
