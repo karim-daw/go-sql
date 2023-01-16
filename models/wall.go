@@ -1,8 +1,13 @@
 package models
 
-import "math"
+import (
+	"math"
+
+	"gorm.io/gorm"
+)
 
 type Wall struct {
+	gorm.Model
 	Name        string
 	Thickness   float64
 	Materials   []IMaterial
@@ -40,4 +45,12 @@ func (w *Wall) calculateThickness() float64 {
 		thickness += material.getThickness()
 	}
 	return thickness
+}
+
+func (w *Wall) calculateUValue() float64 {
+	var uValue float64
+	for _, material := range w.Materials {
+		uValue += material
+	}
+	return uValue
 }
