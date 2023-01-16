@@ -1,8 +1,6 @@
 package models
 
 import (
-	"math"
-
 	"gorm.io/gorm"
 )
 
@@ -10,7 +8,7 @@ type Wall struct {
 	gorm.Model
 	Name        string
 	Thickness   float64
-	Materials   []IMaterial
+	Materials   []Material
 	Offset      float64
 	Orientation float64
 }
@@ -35,10 +33,6 @@ func (w *Wall) calculateWeight() float64 {
 	return w.calculateVolume() * w.calculateArea()
 }
 
-func (w *Wall) rotate(angle float64) {
-	w.Orientation = math.Mod(w.Orientation+angle, 360.0)
-}
-
 func (w *Wall) calculateThickness() float64 {
 	var thickness float64
 	for _, material := range w.Materials {
@@ -47,10 +41,14 @@ func (w *Wall) calculateThickness() float64 {
 	return thickness
 }
 
+func (w *Wall) addOpaqueMaterial(m *Material) {
+	w.Materials = append(w.Materials, *m)
+}
+
 func (w *Wall) calculateUValue() float64 {
 	var uValue float64
 	for _, material := range w.Materials {
-		uValue += material
+		uValue += material.getUValue()
 	}
 	return uValue
 }
