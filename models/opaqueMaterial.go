@@ -10,10 +10,10 @@ type OpaqueMaterial struct {
 	Density  float64
 }
 
-func (o *OpaqueMaterial) getName() string {
+func (o *OpaqueMaterial) setName(name string) string {
 	return o.Name
 }
 
-func (o *OpaqueMaterial) getQuantity() int {
+func (o *OpaqueMaterial) setQuantity() int {
 	return o.Quantity
 }
