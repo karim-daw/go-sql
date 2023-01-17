@@ -11,10 +11,10 @@ type TransperancyMaterial struct {
 	Transperancy float64
 }
 
-func (o *TransperancyMaterial) getName() string {
+func (o *TransperancyMaterial) setName() string {
 	return o.Name
 }
 
-func (o *TransperancyMaterial) getQuantity() int {
+func (o *TransperancyMaterial) setQuantity() int {
 	return o.Quantity
 }

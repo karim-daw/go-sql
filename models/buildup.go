@@ -1,9 +1,17 @@
 package models
 
-type Buildup interface {
-	calculateVolume() float64
-	calculateArea() float64
-	calculateWeight() float64
-	calculateThickness() float64
-	calculateUValue() float64
+import (
+	"gorm.io/gorm"
+)
+
+type Buildup struct {
+	gorm.Model
+	Name      string
+	Category  string
+	Materials []Material `gorm:"many2many:buildup_materials;"`
+}
+
+type BuildupInterface interface {
+	setName() string
+	setCategory() bool
 }

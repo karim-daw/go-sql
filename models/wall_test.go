@@ -1,112 +1,154 @@
-package models
+// package main
 
-import (
-	"fmt"
-)
+// import (
+// 	"go-sql/controllers"
+// 	"go-sql/database"
 
-// ---------------------------------
+// 	"github.com/gin-gonic/gin"
+// )
 
-type NewMaterial struct {
-	ID   int64
-	Name string
-	GWP  float64
-}
+// func main() {
+// 	router := gin.Default()
+// 	database.ConnectDatabase()
 
-// ---------------------------------
+// 	router.POST("/posts", controllers.CreatePost)
+// 	router.POST("/register", controllers.RegisterUser)
 
-type Material interface {
-	setGWP(gwp float64) bool
-	setDensity(dens float64) bool
-	materialInfo() string
-}
+// 	router.GET("/posts", controllers.FindPosts)
+// 	router.GET("/posts/:id", controllers.FindPost) // here!
+// 	router.PATCH("/posts/:id", controllers.UpdatePost)
+// 	router.DELETE("/posts/:id", controllers.DeletePost)
+// 	router.DELETE("/posts", controllers.DeleteAllPosts)
+// 	router.Run("localhost:8080")
+// }
 
-type Envelope interface {
-	setUValue(uVal float64) bool
-	setThickness(thickness int32) bool
-}
+// package models
 
-type Glass interface {
-	setTransperancy(trans float64) bool
-}
+// import (
+// 	"fmt"
+// )
 
-// ---------------------------------
+// // ---------------------------------
 
-func (m *NewMaterial) setUValue(uVal float64) bool {
-	fmt.Printf("Im creating a new material named %s with a u-value: %0.2f\n W/m2", m.Name, uVal)
-	return true
-}
+// type NewMaterial struct {
+// 	ID   int64
+// 	Name string
+// 	GWP  float64
+// }
 
-func (m *NewMaterial) setDensity(den float64) bool {
-	fmt.Printf("Material named %s \t density: %0.2f\n kg/m3", m.Name, den)
-	return true
-}
+// // ---------------------------------
 
-func (m *NewMaterial) setThickness(thickness int32) bool {
-	fmt.Printf("Material named %s \t thickness: %d\n", m.Name, thickness)
-	return true
-}
+// type Material interface {
+// 	materialInfo() string
+// 	setGWP(gwp float64) bool
+// 	setDensity(dens float64) bool
+// }
 
-func (m *NewMaterial) setGWP(gwp float64) bool {
-	fmt.Printf("This material named %s with a gwp: %0.2f kgco2e \n", m.Name, gwp)
-	return true
-}
+// type Envelope interface {
+// 	setUValue(uVal float64) bool
+// 	setThickness(thickness int32) bool
+// }
 
-func (m *NewMaterial) materialInfo() string {
-	displayInfo := fmt.Sprintf("ID: %f, Name: %s, GWP: %0.2f \n", m.ID, m.Name, m.GWP)
-	//fmt.Printf("ID: %s, Name: %s, GWP: %0.2f\n", m.ID, m.Name, m.GWP)
-	return displayInfo
-}
+// type Glass interface {
+// 	setTransperancy(trans float64) bool
+// }
 
-func (m *NewMaterial) setTransperancy(trans float64) bool {
-	fmt.Printf("This material named %s with a transperancy: %0.2f\n", m.Name, trans)
-	return true
-}
+// // ---------------------------------
 
-// ---------------------------------
+// func (m *NewMaterial) materialInfo(id int32, name string) string {
+// 	displayInfo := fmt.Sprintf("\nID: %d, Name: %s\n", id, name)
+// 	fmt.Printf(displayInfo)
+// 	//fmt.Printf("ID: %s, Name: %s, GWP: %0.2f\n", m.ID, m.Name, m.GWP)
+// 	return displayInfo
+// }
 
-func AddGWP(material Material, gwp float64) {
-	fmt.Println("adding CarbonArtifact...")
-	material.setGWP(gwp)
-	material.materialInfo()
-}
+// func (m *NewMaterial) setUValue(uVal float64) bool {
+// 	fmt.Printf("U-value: %0.2f W/m2\n", uVal)
+// 	return true
+// }
 
-func AddDensity(material Material, dens float64) {
-	fmt.Println("adding CarbonArtifact...")
-	material.setDensity(dens)
-}
+// func (m *NewMaterial) setDensity(den float64) bool {
+// 	fmt.Printf("Density: %0.2f kg/m3\n", den)
+// 	return true
+// }
 
-func AddThickness(envelop Envelope, thickness int32) {
-	fmt.Println("adding Thickness...")
-	envelop.setThickness(thickness)
-}
+// func (m *NewMaterial) setThickness(thickness int32) bool {
+// 	fmt.Printf("Thickness: %d\n", thickness)
+// 	return true
+// }
 
-func AddUval(envelop Envelope, uVal float64) {
-	fmt.Println("adding Material...")
-	envelop.setUValue(uVal)
-}
+// func (m *NewMaterial) setGWP(gwp float64) bool {
+// 	fmt.Printf("GWP: %0.2f kgco2e\n", gwp)
+// 	return true
+// }
 
-func AddTransperancy(glass Glass, trans float64) {
-	fmt.Println("adding Transperacy")
-	glass.setTransperancy(trans)
-}
+// func (m *NewMaterial) setTransperancy(trans float64) bool {
+// 	fmt.Printf("Transperancy: %0.2f\n", trans)
+// 	return true
+// }
 
 // ---------------------------------
 
-func main() {
-	brick := &NewMaterial{
-		ID:   1,
-		Name: "Danish klinker brick type 01",
-	}
-	AddGWP(brick, 0.07)
-	AddDensity(brick, 0.5)
-	AddUval(brick, 0.2)
-	AddThickness(brick, 200)
+// func AddGWP(material Material, gwp float64) {
+// 	fmt.Println("adding CarbonArtifact...")
+// 	material.setGWP(gwp)
+// 	material.materialInfo()
+// }
 
-	// glass := &NewMaterial{
-	// 	ID:   2,
-	// 	Name: "Schuco: double glazing",
-	// }
-	// AddMaterial(glass, 0.47)
-	// AddEnvelope(glass, 0.2)
-	// AddGlassMaterial(glass, 0.6)
-}
+// func AddDensity(material Material, dens float64) {
+// 	fmt.Println("adding Density...")
+// 	material.setDensity(dens)
+// }
+
+// func AddUval(envelop Envelope, uVal float64) {
+// 	fmt.Println("adding Material...")
+// 	envelop.setUValue(uVal)
+// }
+
+// func AddThickness(envelop Envelope, thickness int32) {
+// 	fmt.Println("adding Thickness...")
+// 	envelop.setThickness(thickness)
+// }
+
+// func AddTransperancy(glass Glass, trans float64) {
+// 	fmt.Println("adding Transperacy")
+// 	glass.setTransperancy(trans)
+// }
+
+// ---------------------------------
+
+// func main() {
+// 	// 	ID:   1,
+// 	// 	Name: "Danish klinker brick type 01",
+// 	// }
+
+// 	brick := &NewMaterial{}
+// 	brick.materialInfo(0, "Danish klinker brick type 01")
+// 	brick.setGWP(0.134)
+// 	brick.setDensity(0.5)
+// 	brick.setThickness(400)
+// 	brick.setUValue(0.31)
+
+// 	glass := &NewMaterial{}
+// 	glass.materialInfo(0, "Schuco: double glazing")
+// 	glass.setGWP(0.334)
+// 	glass.setDensity(0.5)
+// 	glass.setThickness(100)
+// 	glass.setUValue(1.41)
+// 	glass.setTransperancy(0.7)
+
+// 	// AddGWP(brick, 0.07)
+// 	// AddDensity(brick, 0.5)
+// 	// AddUval(brick, 0.2)
+// 	// AddThickness(brick, 400)
+
+// 	// glass := &NewMaterial{
+// 	// 	ID:   2,
+// 	// 	Name: "Schuco: double glazing",
+// 	// }
+// 	// AddGWP(glass, 1.3)
+// 	// AddDensity(glass, .98)
+// 	// AddUval(glass, 1.2)
+// 	// AddThickness(glass, 200)
+// 	// AddTransperancy(glass, 0.6)
+// }
